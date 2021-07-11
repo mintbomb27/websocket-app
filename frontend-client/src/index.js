@@ -4,11 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const socket = new WebSocket('ws://localhost:8080');
-socket.onmessage = ({data}) => {
-  console.log(data);
-};
-
 ReactDOM.render(
   <React.StrictMode>
     <App />

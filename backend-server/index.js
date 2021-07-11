@@ -1,21 +1,17 @@
-const webSocket = require('ws')
-const server = new webSocket.Server({port:'8080'})
-const readline = require('readline').createInterface({
-    input: process.stdin,
-    output: process.stdout
-})
+const http = require('http').createServer()
 
-server.on('connection', socket => {
-    socket.on('message', message => {
-        console.log(message)
-        socket.send('Gotcha!')
-    })
-    socket.send('hello, server here!');
-    ask();
-    function ask(){
-        readline.question('Message: ', message => {
-            socket.send(message);
-            ask();
-        })
-    }
+const io = require('socket.io')(http,{
+    cors: {origin: "*"}
+});
+
+io.on('connection', (socket) => {
+    console.log(`${socket.id} is connected!`);
+    socket.on('message', (message) => {
+        console.log(message);
+        io.emit('message', message);
+    });
+});
+
+http.listen(8080, () => {
+    console.log('Server is up!')
 })
